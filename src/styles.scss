@@ -26,6 +26,13 @@
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
   padding: 9px 25px;
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: white !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+  }
 }
 body {
   font-family: "SFNS Display" !important;

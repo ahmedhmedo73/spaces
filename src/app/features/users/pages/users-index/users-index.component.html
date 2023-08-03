@@ -3,7 +3,14 @@
     class="users-header-section bg-gray d-flex justify-content-between px-5 pb-4"
   >
     <h2 class="m-0">Users List</h2>
-    <button class="btn btn-primary">+ New User</button>
+    <button
+      class="btn btn-primary"
+      (click)="addUser()"
+      data-bs-toggle="modal"
+      data-bs-target="#userFormModal"
+    >
+      + New User
+    </button>
   </div>
   <div
     class="users-table-container my-3"
@@ -30,15 +37,17 @@
           <div class="user-actions d-flex align-items-center gap-3">
             <button
               class="btn btn-action-user d-flex justify-content-center align-items-center"
-              (click)="$event.stopPropagation()"
+              (click)="$event.stopPropagation(); editUser()"
               data-bs-toggle="modal"
-              data-bs-target="#editModal"
+              data-bs-target="#userFormModal"
             >
               <img src="assets/images/icons/icons8-edit.svg" alt="" />
             </button>
             <button
               class="btn btn-action-user d-flex justify-content-center align-items-center"
-              (click)="$event.stopPropagation()"
+              (click)="$event.stopPropagation(); deleteUser({})"
+              data-bs-toggle="modal"
+              data-bs-target="#userFormModal"
             >
               <img src="assets/images/icons/icons8-delete.svg" alt="" />
             </button>
@@ -60,15 +69,20 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="editModal"
+  id="userFormModal"
   tabindex="-1"
-  aria-labelledby="editModalLabel"
+  aria-labelledby="userFormModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog  modal-dialog-centered ">
+  <div class="modal-dialog modal-dialog-user-form modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
-        
+        <ng-container *ngIf="modalMood == 'userForm'; else elseTemplate">
+          <app-user-form></app-user-form>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <app-user-delete [user]="selectedUser"></app-user-delete>
+        </ng-template>
       </div>
     </div>
   </div>

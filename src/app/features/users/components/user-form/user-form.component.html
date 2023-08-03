@@ -1,0 +1,32 @@
+<form
+  class="user-form-container d-flex flex-column justify-content-center gap-3"
+  [formGroup]="userForm"
+>
+  <div class="user-img-container d-flex justify-content-center w-100">
+    <label for="photo" class="photo-label btn btn-block">
+      <img [src]="userImageSrc" alt="" class="user-img" />
+    </label>
+    <input
+      type="file"
+      class="form-control-file d-none"
+      accept="image/*,.xlsx,.xls"
+      id="photo"
+      name="image"
+      (change)="getUserImgFile($event)"
+    />
+  </div>
+  <div class="user-name">
+    <label for="name" class="text-gray form-label">Name</label>
+    <input type="text" class="form-control" placeholder="name" />
+  </div>
+  <div class="user-job-title">
+    <label for="job-title" class="text-gray form-label">job title</label>
+    <input type="text" class="form-control" placeholder="job title" />
+  </div>
+  <div class="user-form-actions gap-3 w-100">
+    <button class="btn btn-outline-primary cancel" data-bs-dismiss="modal">Cancel</button>
+    <button class="edit btn-primary" data-bs-dismiss="modal" (click)="user ? save() : add()">
+      {{ user ? "Save" : "Add" }}
+    </button>
+  </div>
+</form>
