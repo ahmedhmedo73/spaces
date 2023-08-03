@@ -1,6 +1,10 @@
 :root {
   --primary-color: #8e44ad;
 }
+@font-face {
+  font-family: "SFNS Display";
+  src: url("./assets/fonts/SFNSDisplayRegular/SFNSDisplayRegular.ttf");
+}
 .text-primary {
   color: var(--primary-color) !important;
 }
@@ -15,9 +19,13 @@
   color: white;
   padding: 9px 25px;
 }
-@font-face {
-  font-family: "SFNS Display";
-  src: url("./assets/fonts/SFNSDisplayRegular/SFNSDisplayRegular.ttf");
+.btn-outline-primary {
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 9px 25px;
 }
 body {
   font-family: "SFNS Display" !important;

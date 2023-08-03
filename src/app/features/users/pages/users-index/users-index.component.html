@@ -5,46 +5,70 @@
     <h2 class="m-0">Users List</h2>
     <button class="btn btn-primary">+ New User</button>
   </div>
-  <div class="users-table my-3 mx-auto p-3">
-    <div class="users table-header px-5 d-flex justify-content-between w-100">
-      <p class="m-0 text-gray">User</p>
-      <p class="m-0 me-5 text-gray">Actions</p>
+  <div
+    class="users-table-container my-3"
+    [ngClass]="{ 'table-with-user-details': userDetailsVisibility }"
+  >
+    <div class="users-table p-3">
+      <div class="users table-header px-5 d-flex justify-content-between w-100">
+        <p class="m-0 text-gray">User</p>
+        <p class="m-0 me-5 text-gray">Actions</p>
+      </div>
+      <div class="table-body">
+        <div
+          class="user user-underline d-flex justify-content-between px-5"
+          (click)="showUserDetails()"
+        >
+          <div class="user-detail d-flex gap-3 align-items-center">
+            <img
+              src="../../../../../assets/images/users/photo-1535713875002-d1d0cf377fde.jpeg"
+              class="user-img"
+              alt=""
+            />
+            <p class="user-name m-0 text-capitalize">sayed</p>
+          </div>
+          <div class="user-actions d-flex align-items-center gap-3">
+            <button
+              class="btn btn-action-user d-flex justify-content-center align-items-center"
+              (click)="$event.stopPropagation()"
+              data-bs-toggle="modal"
+              data-bs-target="#editModal"
+            >
+              <img src="assets/images/icons/icons8-edit.svg" alt="" />
+            </button>
+            <button
+              class="btn btn-action-user d-flex justify-content-center align-items-center"
+              (click)="$event.stopPropagation()"
+            >
+              <img src="assets/images/icons/icons8-delete.svg" alt="" />
+            </button>
+            <button class="btn btn-user-details">
+              <i class="bi bi-chevron-right text-primary fs-6"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="table-body">
-      <div class="user user-underline d-flex justify-content-between px-5">
-        <div class="user-detail d-flex gap-3 align-items-center">
-          <img
-            src="../../../../../assets/images/users/photo-1535713875002-d1d0cf377fde.jpeg"
-            class="user-img"
-            alt=""
-          />
-          <p class="user-name m-0 text-capitalize">sayed</p>
-        </div>
-        <div class="user-actions d-flex align-items-center gap-3">
-          <button
-            class="btn btn-action-user d-flex justify-content-center align-items-center"
-          >
-            <img
-              src="../../../../../assets/images/icons/icons8-edit.svg"
-              alt=""
-            />
-          </button>
-          <button
-            class="btn btn-action-user d-flex justify-content-center align-items-center"
-          >
-            <img
-              src="../../../../../assets/images/icons/icons8-delete.svg"
-              alt=""
-            />
-          </button>
-          <button class="btn btn-user-details">
-            <img
-              src="../../../../../assets/images/icons/right-arrow.png"
-              class="btn-user-details-img"
-              alt=""
-            />
-          </button>
-        </div>
+    <div class="user-details-side-bar h-100 p-2 flex-column">
+      <app-user-details
+        (hideUserDetails)="hideUserDetails()"
+      ></app-user-details>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog  modal-dialog-centered ">
+    <div class="modal-content">
+      <div class="modal-body">
+        
       </div>
     </div>
   </div>
