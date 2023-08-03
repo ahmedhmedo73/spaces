@@ -5,6 +5,10 @@
   height: 70px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   padding: 15px 135px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 .login-btn {
   height: 40px;
@@ -14,6 +18,7 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border: 0;
   color: white;
+  padding: 9px 25px;
 }
 .nav-item{
   margin-right: 30px;
