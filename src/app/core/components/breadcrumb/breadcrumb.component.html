@@ -1,0 +1,15 @@
+<div
+  class="container-fluid breadcrumb-container d-flex align-items-center bg-gray px-5"
+  *ngIf="showBreadcrumb()"
+>
+  <p class="m-0">
+    <a
+      class="text-primary text-capitalize text-decoration-none"
+      *ngFor="let route of routes; let i = index"
+      [routerLink]="routes.slice(0, i + 1).join('/')"
+    >
+      {{ route }}
+      <span *ngIf="i != routes.length - 1" class="text-black">/</span>
+    </a>
+  </p>
+</div>

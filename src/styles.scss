@@ -1,10 +1,19 @@
+:root {
+  --primary-color: #8e44ad;
+}
+.text-primary {
+  color: var(--primary-color) !important;
+}
+.bg-gray{
+  background: #DEDEDE;
+}
 @font-face {
   font-family: "SFNS Display";
   src: url("./assets/fonts/SFNSDisplayRegular/SFNSDisplayRegular.ttf");
 }
 body {
   font-family: "SFNS Display" !important;
-  padding-top: 80px;
+  padding-top: 70px;
 }
 .text-gray {
   color: #7f8c8d;
