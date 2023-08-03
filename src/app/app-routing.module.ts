@@ -9,6 +9,11 @@ const routes: Routes = [
         (m) => m.AuthenticationModule
       ),
   },
+  {
+    path: 'users',
+    loadChildren: () =>
+      import('./features/users/users.module').then((m) => m.UsersModule),
+  },
 ];
 
 @NgModule({

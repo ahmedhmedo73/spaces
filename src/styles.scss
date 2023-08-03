@@ -4,8 +4,16 @@
 .text-primary {
   color: var(--primary-color) !important;
 }
-.bg-gray{
-  background: #DEDEDE;
+.bg-gray {
+  background: #dedede;
+}
+.btn-primary {
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border: 0;
+  color: white;
+  padding: 9px 25px;
 }
 @font-face {
   font-family: "SFNS Display";
