@@ -39,7 +39,7 @@
     </button>
     <button
       class="edit btn-primary"
-      (click)="user ? save() : add()"
+      (click)="user ? edit() : add()"
       [disabled]="userForm.invalid"
     >
       {{ user ? "Save" : "Add" }}

@@ -39,11 +39,11 @@ export class UsersIndexComponent {
     this.userDetailsVisibility = false;
   }
   addUser(): void {
-    this.showUserFormModal('userForm');
+    this.showUserFormModal('addUser');
   }
   editUser(user: User): void {
     this.selectedUser = user;
-    this.showUserFormModal('userForm');
+    this.showUserFormModal('editUser');
   }
   showUserFormModal(modalMood: string): void {
     this.userFormModalVisibility = true;
@@ -51,9 +51,10 @@ export class UsersIndexComponent {
   }
   closeUserFormModal(): void {
     this.userFormModalVisibility = false;
+    this.modalMood = '';
   }
   deleteUser(user: User): void {
-    this.showUserFormModal('delete');
+    this.showUserFormModal('deleteUser');
 
     this.selectedUser = user;
   }

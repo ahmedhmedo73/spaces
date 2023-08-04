@@ -25,7 +25,9 @@
         >
           <div class="user-detail d-flex gap-3 align-items-center">
             <img [src]="user.avatar" class="user-img" alt="" />
-            <p class="user-name m-0 text-capitalize">{{ user.first_name }}</p>
+            <p class="user-name m-0 text-capitalize">
+              {{ user.first_name + " " + user.last_name }}
+            </p>
           </div>
           <div class="user-actions d-flex align-items-center gap-3">
             <button
@@ -37,8 +39,6 @@
             <button
               class="btn btn-action-user d-flex justify-content-center align-items-center"
               (click)="$event.stopPropagation(); deleteUser(user)"
-              data-bs-toggle="modal"
-              data-bs-target="#userFormModal"
             >
               <img src="assets/images/icons/icons8-delete.svg" alt="" />
             </button>
@@ -69,15 +69,26 @@
   [(visible)]="userFormModalVisibility"
   (onHide)="closeUserFormModal()"
 >
-  <ng-container *ngIf="modalMood == 'userForm'; else elseTemplate">
-    <app-user-form (closeUserFormModal)="closeUserFormModal()"></app-user-form>
-  </ng-container>
-  <ng-template #elseTemplate>
-    <app-user-delete
-      [user]="selectedUser"
-      (closeUserFormModal)="closeUserFormModal()"
-    ></app-user-delete>
-  </ng-template>
+  <div [ngSwitch]="modalMood">
+    <div *ngSwitchCase="'addUser'">
+      <app-user-form
+        (closeUserFormModal)="closeUserFormModal()"
+      ></app-user-form>
+    </div>
+    <div *ngSwitchCase="'editUser'">
+      <app-user-form
+        (closeUserFormModal)="closeUserFormModal()"
+        [user]="selectedUser"
+      ></app-user-form>
+    </div>
+    <div *ngSwitchCase="'deleteUser'">
+      <app-user-delete
+        [user]="selectedUser"
+        (closeUserFormModal)="closeUserFormModal()"
+      ></app-user-delete>
+    </div>
+    <div *ngSwitchDefault>output2</div>
+  </div>
 </p-dialog>
 
 <!-- Modal
