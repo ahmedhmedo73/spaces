@@ -17,15 +17,31 @@
   </div>
   <div class="user-name">
     <label for="name" class="text-gray form-label">Name</label>
-    <input type="text" class="form-control" placeholder="name" />
+    <input
+      type="text"
+      class="form-control"
+      placeholder="name"
+      formControlName="name"
+    />
   </div>
   <div class="user-job-title">
     <label for="job-title" class="text-gray form-label">job title</label>
-    <input type="text" class="form-control" placeholder="job title" />
+    <input
+      type="text"
+      class="form-control"
+      placeholder="job title"
+      formControlName="job"
+    />
   </div>
   <div class="user-form-actions gap-3 w-100">
-    <button class="btn btn-outline-primary cancel" data-bs-dismiss="modal">Cancel</button>
-    <button class="edit btn-primary" data-bs-dismiss="modal" (click)="user ? save() : add()">
+    <button class="btn btn-outline-primary cancel" (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      class="edit btn-primary"
+      (click)="user ? save() : add()"
+      [disabled]="userForm.invalid"
+    >
       {{ user ? "Save" : "Add" }}
     </button>
   </div>

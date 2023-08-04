@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { User } from '../../interfaces/users.interface';
 
 @Component({
   selector: 'app-user-delete',
@@ -6,7 +7,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./user-delete.component.scss'],
 })
 export class UserDeleteComponent {
-  @Input('user') user: any;
+  @Input('user') user!: User;
+  @Output('closeUserFormModal') closeUserFormModalEmitter = new EventEmitter();
 
   yes(): void {}
+
+  closeUserFormModal(): void {
+    this.closeUserFormModalEmitter.emit();
+  }
 }

@@ -1,10 +1,14 @@
 <form
-  class="user-form-container d-flex flex-column justify-content-center align-items-center gap-3"
+  class="user-form-container d-flex flex-column justify-content-center align-items-center gap-3 mt-3"
+  *ngIf="user != undefined"
 >
   <p class="m-0">Are you sure you wany to delete</p>
-  <h4>Sayed</h4>
+  <h4>{{ user.first_name }}</h4>
   <div class="user-form-actions gap-3 w-100">
-    <button class="btn btn-outline-primary cancel" data-bs-dismiss="modal">
+    <button
+      class="btn btn-outline-primary cancel"
+      (click)="closeUserFormModal()"
+    >
       No
     </button>
     <button class="edit btn-primary" data-bs-dismiss="modal" (click)="yes()">

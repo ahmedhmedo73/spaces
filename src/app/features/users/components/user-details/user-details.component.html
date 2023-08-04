@@ -1,5 +1,6 @@
 <div
   class="close-side-bar d-flex gap-2 flex-column justify-content-end align-items-center"
+  *ngIf="user"
 >
   <button
     class="btn w-100 d-flex justify-content-end"
@@ -9,15 +10,15 @@
   </button>
   <img
     class="user-details-img"
-    src="../../../../../assets/images/users/photo-1535713875002-d1d0cf377fde.jpeg"
+    [src]="user.avatar"
   />
-  <h2 class="m-0 user-details-name">Sayed</h2>
+  <h2 class="m-0 user-details-name">{{user.first_name}}</h2>
   <div class="user-details-actions mt-4 d-flex justify-content-between gap-3">
-    <button class="btn user-details-edit d-flex gap-2 btn-primary">
+    <button class="btn user-details-edit d-flex gap-2 btn-primary" (click)="editUser()">
       <i class="bi bi-pencil-fill text-white"></i>
       <p class="m-0">Edit</p>
     </button>
-    <button class="btn user-details-delete d-flex gap-2 btn-outline-primary">
+    <button class="btn user-details-delete d-flex gap-2 btn-outline-primary" (click)="deleteUser()">
       <i class="bi bi-trash-fill text-primary"></i>
       <p class="m-0">Delete</p>
     </button>
