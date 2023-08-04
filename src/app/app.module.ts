@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { MessageService } from 'primeng/api';
     ToastModule,
     AppRoutingModule
   ],
-  providers: [HttpClient,MessageService],
+  providers: [HttpClient,MessageService,CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
