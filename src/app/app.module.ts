@@ -8,6 +8,8 @@ import { BreadcrumbComponent } from './core/components/breadcrumb/breadcrumb.com
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -20,9 +22,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
+    ToastModule,
     AppRoutingModule
   ],
-  providers: [HttpClient],
+  providers: [HttpClient,MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
