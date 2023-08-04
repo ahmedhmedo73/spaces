@@ -24,7 +24,7 @@
   grid-template-columns: 1fr;
   justify-content: center;
   padding: 0px 54px;
-  height: 65vh;
+  // height: 65vh;
 }
 .table-with-user-details {
   grid-template-columns: 1fr 300px;
@@ -86,4 +86,11 @@
       border-radius: 15px !important;
     }
   }
+}
+.loader-gif{
+  width: 100px;
+}
+.h-0{
+  height: 0;
+  overflow: hidden;
 }

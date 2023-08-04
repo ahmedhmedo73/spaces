@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { UsersService } from '../../services/users/users.service';
 import { User } from '../../interfaces/users.interface';
 
@@ -14,17 +14,35 @@ export class UsersIndexComponent {
   selectedUser!: User;
   users: User[] = [];
   selectedUserIndex: number = 0;
-
+  page: number = 1;
+  numOfPages: number = 0;
+  loading: boolean = false;
   constructor(private UsersService: UsersService) {}
 
   ngOnInit(): void {
     this.getUsers();
   }
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    let docElem = document.documentElement;
+    let laoderOffset = document.getElementById('loader')?.offsetTop || 0;
 
+    if (
+      docElem.scrollHeight <= docElem.scrollTop + laoderOffset &&
+      this.numOfPages >= this.page &&
+      !this.loading
+    ) {
+      this.getUsers();
+    }
+  }
   getUsers(): void {
-    this.UsersService.GetUsers(1).subscribe({
+    this.loading = true;
+    this.UsersService.GetUsers(this.page).subscribe({
       next: (response) => {
-        this.users = response.data;
+        this.users = this.users.concat(response.data);
+        this.page++;
+        this.numOfPages = response.total_pages;
+        this.loading = false;
       },
       error: (error) => {},
     });
