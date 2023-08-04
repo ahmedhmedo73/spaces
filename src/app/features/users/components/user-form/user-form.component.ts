@@ -13,6 +13,7 @@ export class UserFormComponent {
   @Input('user') user!: User;
   @Output('closeUserFormModal') closeUserFormModalEmitter = new EventEmitter();
   userForm!: FormGroup;
+  httpLoading: boolean = false;
   userImageFile: any;
   userImageSrc: any =
     '../../../../../assets/images/Default_Profile_Picture.png';
@@ -25,7 +26,6 @@ export class UserFormComponent {
 
   ngOnInit(): void {
     this.createUserForm();
-    console.log(this.user);
 
     if (this.user) {
       this.userForm.patchValue({
@@ -62,8 +62,11 @@ export class UserFormComponent {
       return;
     }
     if (this.userForm.valid) {
+      this.httpLoading = true;
       this.usersService.creatUser(this.userForm.value).subscribe({
         next: (response: any) => {
+          this.httpLoading = false;
+
           if (response.id) {
             this.sharedService.show({
               severity: 'success',
@@ -72,6 +75,8 @@ export class UserFormComponent {
             });
             this.cancel();
           } else {
+            this.httpLoading = false;
+
             this.sharedService.show({
               severity: 'error',
               summary: 'Create User',
@@ -80,6 +85,8 @@ export class UserFormComponent {
           }
         },
         error: (error) => {
+          this.httpLoading = false;
+
           this.sharedService.show({
             severity: 'error',
             summary: 'Create User',
@@ -91,10 +98,14 @@ export class UserFormComponent {
   }
   edit(): void {
     if (this.userForm.valid) {
+      this.httpLoading = true;
+
       this.usersService
         .updateUser(this.user.id, this.userForm.value)
         .subscribe({
           next: (response: any) => {
+            this.httpLoading = false;
+
             if (response.id) {
               this.sharedService.show({
                 severity: 'success',
@@ -103,6 +114,8 @@ export class UserFormComponent {
               });
               this.cancel();
             } else {
+              this.httpLoading = false;
+
               this.sharedService.show({
                 severity: 'error',
                 summary: 'Update User',
@@ -111,6 +124,8 @@ export class UserFormComponent {
             }
           },
           error: (error) => {
+            this.httpLoading = false;
+
             this.sharedService.show({
               severity: 'error',
               summary: 'Update User',

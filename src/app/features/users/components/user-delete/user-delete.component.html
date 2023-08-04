@@ -3,7 +3,7 @@
   *ngIf="user != undefined"
 >
   <p class="m-0">Are you sure you wany to delete</p>
-  <h4>{{ user.first_name + " " + user.last_name}}</h4>
+  <h4>{{ user.first_name + " " + user.last_name }}</h4>
   <div class="user-form-actions gap-3 w-100">
     <button
       class="btn btn-outline-primary cancel"
@@ -11,8 +11,11 @@
     >
       No
     </button>
-    <button class="edit btn-primary" (click)="delete()">
-      Yes
-    </button>
+    <p-button
+      label="Yes"
+      [styleClass]="'w-100 edit btn-primary'"
+      [loading]="httpLoading"
+      (onClick)="delete()"
+    ></p-button>
   </div>
 </form>

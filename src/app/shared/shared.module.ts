@@ -3,8 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
-
-let modules = [CommonModule, FormsModule, ReactiveFormsModule,DialogModule,VirtualScrollerModule];
+import { ButtonModule } from 'primeng/button';
+let modules = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  DialogModule,
+  VirtualScrollerModule,
+  ButtonModule,
+];
 
 @NgModule({
   declarations: [],

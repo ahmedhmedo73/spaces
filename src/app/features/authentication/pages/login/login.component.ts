@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginComponent {
   loginForm!: FormGroup;
+  httpLoading: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
@@ -30,8 +31,10 @@ export class LoginComponent {
   }
   login(): void {
     if (this.loginForm.valid) {
+      this.httpLoading = true;
       this.authenticationService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
+          this.httpLoading = false;
           this.sharedService.show({
             severity: 'success',
             summary: 'Login',
@@ -41,6 +44,7 @@ export class LoginComponent {
           this.router.navigateByUrl('');
         },
         error: (reposnse) => {
+          this.httpLoading = false;
           this.sharedService.show({
             severity: 'error',
             summary: 'Login',

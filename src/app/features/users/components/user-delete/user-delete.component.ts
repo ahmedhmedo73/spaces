@@ -11,14 +11,17 @@ import { SharedService } from 'src/app/shared/services/shared/shared.service';
 export class UserDeleteComponent {
   @Input('user') user!: User;
   @Output('closeUserFormModal') closeUserFormModalEmitter = new EventEmitter();
+  httpLoading: boolean = false;
   constructor(
     private usersService: UsersService,
     private sharedService: SharedService
   ) {}
 
   delete(): void {
+    this.httpLoading = true;
     this.usersService.deleteUser(this.user.id).subscribe({
       next: (response: any) => {
+        this.httpLoading = false;
         this.sharedService.show({
           severity: 'success',
           summary: 'Delete User',
@@ -27,6 +30,7 @@ export class UserDeleteComponent {
         this.closeUserFormModal();
       },
       error: (error) => {
+        this.httpLoading = false;
         this.sharedService.show({
           severity: 'error',
           summary: 'Delete User',

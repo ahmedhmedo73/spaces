@@ -16,14 +16,15 @@ body {
 .bg-gray {
   background: #dedede;
 }
-.btn-primary {
+.btn-primary,.p-button {
   border-radius: 20px;
   background-color: var(--primary-color);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border: 0;
   color: white;
   padding: 9px 25px;
-  &:hover,&:focus,&:active{
+  font-weight: normal;
+  &:hover,&:focus,&:active,&:enabled:hover{
     background-color: var(--primary-color) !important;
   }
   &:disabled{

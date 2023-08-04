@@ -37,12 +37,13 @@
     <button class="btn btn-outline-primary cancel" (click)="cancel()">
       Cancel
     </button>
-    <button
-      class="edit btn-primary"
-      (click)="user ? edit() : add()"
+
+    <p-button
+      [label]="user ? 'Save' : 'Add'"
+      [styleClass]="'edit btn-primary w-100'"
+      [loading]="httpLoading"
+      (onClick)="user ? edit() : add()"
       [disabled]="userForm.invalid"
-    >
-      {{ user ? "Save" : "Add" }}
-    </button>
+    ></p-button>
   </div>
 </form>
