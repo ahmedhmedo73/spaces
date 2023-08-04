@@ -7,6 +7,7 @@ import { UserDetailsComponent } from './components/user-details/user-details.com
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserDeleteComponent } from './components/user-delete/user-delete.component';
+import { UsersIndexSekeletonComponent } from './components/users-index-sekeleton/users-index-sekeleton.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { UserDeleteComponent } from './components/user-delete/user-delete.compon
     UsersIndexComponent,
     UserDetailsComponent,
     UserFormComponent,
-    UserDeleteComponent
+    UserDeleteComponent,
+    UsersIndexSekeletonComponent
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
+
 let modules = [
   CommonModule,
   FormsModule,
@@ -11,6 +13,7 @@ let modules = [
   DialogModule,
   VirtualScrollerModule,
   ButtonModule,
+  SkeletonModule
 ];
 
 @NgModule({
