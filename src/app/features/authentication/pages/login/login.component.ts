@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { login } from '../../store/authentication.actions';
 import { selectIsLoading } from '../../store/authentication.selectors';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { selectIsLoading } from '../../store/authentication.selectors';
 export class LoginComponent {
   loginForm!: FormGroup;
   httpLoading: boolean = false;
+  subscriptionList: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder, private store: Store) {}
   ngOnInit(): void {
@@ -19,11 +21,13 @@ export class LoginComponent {
     this.getIsLoading();
   }
   getIsLoading() {
-    this.store.select(selectIsLoading).subscribe({
-      next: (data) => {
-        this.httpLoading = data;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectIsLoading).subscribe({
+        next: (data) => {
+          this.httpLoading = data;
+        },
+      })
+    );
   }
   createLoginForm(): void {
     this.loginForm = this.formBuilder.group({
@@ -35,5 +39,10 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.store.dispatch(login({ loginData: this.loginForm.value }));
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

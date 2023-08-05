@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { setToken } from 'src/app/features/authentication/store/authentication.actions';
 import { selectToken } from 'src/app/features/authentication/store/authentication.selectors';
 
@@ -11,22 +12,30 @@ import { selectToken } from 'src/app/features/authentication/store/authenticatio
 })
 export class NavbarComponent {
   isLogin: boolean = false;
+  subscriptionList: Subscription[] = [];
   constructor(private store: Store, private router: Router) {}
 
   ngOnInit(): void {
     this.getToken();
   }
   getToken() {
-    this.store.select(selectToken).subscribe({
-      next: (data) => {
-        console.log(data);
+    this.subscriptionList.push(
+      this.store.select(selectToken).subscribe({
+        next: (data) => {
+          console.log(data);
 
-        this.isLogin = !!data;
-      },
-    });
+          this.isLogin = !!data;
+        },
+      })
+    );
   }
   logout(): void {
     this.store.dispatch(setToken({ token: '' }));
     this.router.navigateByUrl('/auth/login');
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

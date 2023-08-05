@@ -13,6 +13,7 @@ import {
   hideUserFormModal,
   updateUser,
 } from '../../store/users.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-form',
@@ -26,6 +27,7 @@ export class UserFormComponent {
   userImageFile: any;
   userImageSrc: any =
     '../../../../../assets/images/Default_Profile_Picture.png';
+  subscriptionList: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,27 +42,33 @@ export class UserFormComponent {
     this.getUserModalMood();
   }
   getUserModalMood() {
-    this.store.select(selectUserModalMood).subscribe({
-      next: (response) => {
-        if (response == 'editUser') {
-          this.handleDataForEdit();
-        }
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectUserModalMood).subscribe({
+        next: (response) => {
+          if (response == 'editUser') {
+            this.handleDataForEdit();
+          }
+        },
+      })
+    );
   }
   getSelectedUser() {
-    this.store.select(selectSelectedUser).subscribe({
-      next: (response) => {
-        this.user = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectSelectedUser).subscribe({
+        next: (response) => {
+          this.user = response;
+        },
+      })
+    );
   }
   getIsLoading() {
-    this.store.select(selectIsLoading).subscribe({
-      next: (response) => {
-        this.httpLoading = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectIsLoading).subscribe({
+        next: (response) => {
+          this.httpLoading = response;
+        },
+      })
+    );
   }
 
   handleDataForEdit(): void {
@@ -111,5 +119,11 @@ export class UserFormComponent {
   }
   cancel(): void {
     this.store.dispatch(hideUserFormModal());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

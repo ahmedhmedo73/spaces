@@ -6,6 +6,7 @@ import {
   selectIsLoading,
   selectSelectedUser,
 } from '../../store/users.selectors';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-delete',
@@ -15,6 +16,7 @@ import {
 export class UserDeleteComponent {
   user!: User;
   httpLoading: boolean = false;
+  subscriptionList: Subscription[] = [];
 
   constructor(private store: Store) {}
   ngOnInit(): void {
@@ -22,18 +24,22 @@ export class UserDeleteComponent {
     this.getSelectedUser();
   }
   getSelectedUser() {
-    this.store.select(selectSelectedUser).subscribe({
-      next: (response) => {
-        this.user = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectSelectedUser).subscribe({
+        next: (response) => {
+          this.user = response;
+        },
+      })
+    );
   }
   getIsLoading() {
-    this.store.select(selectIsLoading).subscribe({
-      next: (response) => {
-        this.httpLoading = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectIsLoading).subscribe({
+        next: (response) => {
+          this.httpLoading = response;
+        },
+      })
+    );
   }
   delete(): void {
     this.store.dispatch(deleteUser({ id: this.user.id }));
@@ -41,5 +47,10 @@ export class UserDeleteComponent {
 
   closeUserFormModal(): void {
     this.store.dispatch(hideUserFormModal());
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

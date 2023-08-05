@@ -3,6 +3,7 @@ import { User } from '../../models/users.interface';
 import { Store } from '@ngrx/store';
 import { selectSelectedUser } from '../../store/users.selectors';
 import { hideUserDetails } from '../../store/users.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-details',
@@ -12,17 +13,20 @@ import { hideUserDetails } from '../../store/users.actions';
 export class UserDetailsComponent {
   @Output('showUserFormModal') showUserFormModalEmitter = new EventEmitter();
   user!: User;
+  subscriptionList: Subscription[] = [];
 
   constructor(private store: Store) {}
   ngOnInit(): void {
     this.getSelectedUser();
   }
   getSelectedUser() {
-    this.store.select(selectSelectedUser).subscribe({
-      next: (response) => {
-        this.user = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectSelectedUser).subscribe({
+        next: (response) => {
+          this.user = response;
+        },
+      })
+    );
   }
   hideUserDetails(): void {
     this.store.dispatch(hideUserDetails());
@@ -32,5 +36,10 @@ export class UserDetailsComponent {
   }
   deleteUser(): void {
     this.showUserFormModalEmitter.emit('deleteUser');
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

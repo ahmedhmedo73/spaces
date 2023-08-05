@@ -20,6 +20,7 @@ import {
   selectUsersTotal,
 } from '../../store/users.selectors';
 import { UserModalMoodType } from '../../models/users.types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-users-index',
@@ -36,6 +37,8 @@ export class UsersIndexComponent {
   numOfUsers: number = 6;
   totalUsers: number = 0;
   loading: boolean = false;
+  subscriptionList: Subscription[] = [];
+
   constructor(private store: Store) {}
 
   ngOnInit(): void {
@@ -61,48 +64,60 @@ export class UsersIndexComponent {
     }
   }
   getUserModalMood() {
-    this.store.select(selectUserModalMood).subscribe({
-      next: (response) => {
-        this.modalMood = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectUserModalMood).subscribe({
+        next: (response) => {
+          this.modalMood = response;
+        },
+      })
+    );
   }
   getUserDetailsVisibility() {
-    this.store.select(selectUserDetailsVisibility).subscribe({
-      next: (response) => {
-        this.userDetailsVisibility = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectUserDetailsVisibility).subscribe({
+        next: (response) => {
+          this.userDetailsVisibility = response;
+        },
+      })
+    );
   }
   getUserFormModalVisibility(): void {
-    this.store.select(selectUserFormModalVisibility).subscribe({
-      next: (response) => {
-        this.userFormModalVisibility = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectUserFormModalVisibility).subscribe({
+        next: (response) => {
+          this.userFormModalVisibility = response;
+        },
+      })
+    );
   }
   getUsersLoading(): void {
-    this.store.select(selectIsLoading).subscribe({
-      next: (response) => {
-        this.loading = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectIsLoading).subscribe({
+        next: (response) => {
+          this.loading = response;
+        },
+      })
+    );
   }
 
   getUsers(): void {
     this.store.dispatch(getUsers({ numOfUsers: this.numOfUsers }));
-    this.store.select(selectUsersList).subscribe({
-      next: (response) => {
-        this.users = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectUsersList).subscribe({
+        next: (response) => {
+          this.users = response;
+        },
+      })
+    );
   }
   getUsersTotal(): void {
-    this.store.select(selectUsersTotal).subscribe({
-      next: (response) => {
-        this.totalUsers = response;
-      },
-    });
+    this.subscriptionList.push(
+      this.store.select(selectUsersTotal).subscribe({
+        next: (response) => {
+          this.totalUsers = response;
+        },
+      })
+    );
   }
 
   showUserDetails(user: User, index: number) {
@@ -132,5 +147,10 @@ export class UsersIndexComponent {
     this.showUserFormModal('deleteUser');
 
     this.store.dispatch(changeSelectedUser({ selectedUser: user }));
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }
