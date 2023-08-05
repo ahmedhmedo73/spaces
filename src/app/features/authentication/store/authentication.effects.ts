@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { SharedService } from 'src/app/shared/services/shared/shared.service';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import * as AuthenticationActions from './authentication.actions';
 import { LoginResponse } from '../interfaces/authentication.interface';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 @Injectable()
 export class AuthenticationEffects {
@@ -32,6 +33,14 @@ export class AuthenticationEffects {
 
         this.router.navigateByUrl('');
         return AuthenticationActions.loginSuccess({ loginResponse });
+      }),
+      catchError((error: any) => {
+        this.sharedService.show({
+          severity: 'error',
+          summary: 'Login',
+          detail: error.error,
+        });
+        return of(AuthenticationActions.requestFail());
       })
     )
   );

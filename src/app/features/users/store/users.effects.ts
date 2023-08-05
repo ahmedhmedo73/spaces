@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, catchError, of } from 'rxjs';
 
 import { UsersService } from '../services/users/users.service';
 import { UsersResponse } from '../models/users.interface';
@@ -26,7 +26,15 @@ export class UsersEffects {
           users: usersResponse.data,
           totalUsers: usersResponse.total,
         })
-      )
+      ),
+      catchError((error) => {
+        this.sharedService.show({
+          severity: 'error',
+          summary: 'get all User',
+          detail: error.error,
+        });
+        return of(UsersActions.requestFail());
+      })
     )
   );
 
@@ -43,6 +51,14 @@ export class UsersEffects {
           detail: 'User created successfully',
         });
         return UsersActions.createUserSuccess();
+      }),
+      catchError((error) => {
+        this.sharedService.show({
+          severity: 'error',
+          summary: 'Create User',
+          detail: error.error,
+        });
+        return of(UsersActions.requestFail());
       })
     )
   );
@@ -60,6 +76,14 @@ export class UsersEffects {
           detail: 'User Updated successfully',
         });
         return UsersActions.updateUserSuccess();
+      }),
+      catchError((error: any) => {
+        this.sharedService.show({
+          severity: 'error',
+          summary: 'Update User',
+          detail: error.error,
+        });
+        return of(UsersActions.requestFail());
       })
     )
   );
@@ -71,6 +95,14 @@ export class UsersEffects {
         return UsersActions.getUserDetailsSuccess({
           userDetails: response.data,
         });
+      }),
+      catchError((error: any) => {
+        this.sharedService.show({
+          severity: 'error',
+          summary: 'get User Details',
+          detail: error.error,
+        });
+        return of(UsersActions.requestFail());
       })
     )
   );
@@ -86,6 +118,14 @@ export class UsersEffects {
           detail: 'User Deleted successfully',
         });
         return UsersActions.deleteUserSuccess();
+      }),
+      catchError((error: any) => {
+        this.sharedService.show({
+          severity: 'error',
+          summary: 'delete User',
+          detail: error.error,
+        });
+        return of(UsersActions.requestFail());
       })
     )
   );

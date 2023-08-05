@@ -24,3 +24,4 @@ export const loginSuccess = createAction(
     loginResponse: LoginResponse;
   }>()
 );
+export const requestFail = createAction(`${prefix} request fail`);

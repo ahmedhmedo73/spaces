@@ -8,6 +8,12 @@ export const initialUsersState: IAuthenticationState = {
 };
 const reducer = createReducer<IAuthenticationState>(
   initialUsersState,
+  on(AuthActions.requestFail, (state) => {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }),
   on(AuthActions.setToken, (state, { token }) => {
     localStorage.setItem('token', token);
     return {
@@ -15,6 +21,7 @@ const reducer = createReducer<IAuthenticationState>(
       token,
     };
   }),
+
   on(AuthActions.login, (state) => {
     return {
       ...state,

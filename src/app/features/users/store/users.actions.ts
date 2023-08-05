@@ -75,4 +75,5 @@ export const deleteUser = createAction(
     id: number;
   }>()
 );
+export const requestFail = createAction(`${prefix} request fail`);
 export const deleteUserSuccess = createAction(`${deleteUser.type} Success`);

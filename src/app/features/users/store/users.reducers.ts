@@ -14,6 +14,12 @@ export const initialUsersState: IUsersState = {
 };
 const reducer = createReducer<IUsersState>(
   initialUsersState,
+  on(UsersActions.requestFail, (state) => {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }),
   on(UsersActions.changeModalMood, (state, { mood }) => {
     return {
       ...state,
