@@ -10,8 +10,6 @@ export class AuthenticationService {
   constructor(private httpClient: HttpClient) {}
 
   login(data: LoginData) {
-    console.log(data);
-    
     return this.httpClient.post<LoginResponse>(environment.endpoint + 'login', data);
   }
 }

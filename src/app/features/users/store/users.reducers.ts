@@ -82,9 +82,10 @@ const reducer = createReducer<IUsersState>(
       isLoading: true,
     };
   }),
-  on(UsersActions.createUserSuccess, (state) => {
+  on(UsersActions.updateUserSuccess, (state) => {
     return {
       ...state,
+      userFormModalVisibility: false,
       isLoading: false,
     };
   }),
@@ -94,9 +95,10 @@ const reducer = createReducer<IUsersState>(
       isLoading: true,
     };
   }),
-  on(UsersActions.getUsersSuccess, (state) => {
+  on(UsersActions.deleteUserSuccess, (state) => {
     return {
       ...state,
+      userFormModalVisibility: false,
       isLoading: false,
     };
   })

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UsersIndexSekeletonComponent } from './users-index-sekeleton.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 describe('UsersIndexSekeletonComponent', () => {
   let component: UsersIndexSekeletonComponent;
@@ -8,6 +9,7 @@ describe('UsersIndexSekeletonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports :[SkeletonModule],
       declarations: [UsersIndexSekeletonComponent]
     });
     fixture = TestBed.createComponent(UsersIndexSekeletonComponent);

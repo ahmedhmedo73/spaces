@@ -5,6 +5,7 @@ import { DialogModule } from 'primeng/dialog';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
+import { ToastModule } from 'primeng/toast';
 
 let modules = [
   CommonModule,
@@ -13,6 +14,7 @@ let modules = [
   DialogModule,
   VirtualScrollerModule,
   ButtonModule,
+  ToastModule,
   SkeletonModule
 ];
 

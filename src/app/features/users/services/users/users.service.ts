@@ -16,7 +16,7 @@ export class UsersService {
     return this.httpClient.post(environment.endpoint + 'users', data);
   }
   updateUser(id: number, data: UserFormData) {
-    return this.httpClient.post(environment.endpoint + 'users/' + id, data);
+    return this.httpClient.put(environment.endpoint + 'users/' + id, data);
   }
   deleteUser(id: number) {
     return this.httpClient.delete(environment.endpoint + 'users/' + id);

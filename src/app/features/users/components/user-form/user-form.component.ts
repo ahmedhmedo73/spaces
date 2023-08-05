@@ -56,7 +56,9 @@ export class UserFormComponent {
     this.subscriptionList.push(
       this.store.select(selectSelectedUser).subscribe({
         next: (response) => {
-          this.user = response;
+          if (response.id) {
+            this.user = response;
+          }
         },
       })
     );
