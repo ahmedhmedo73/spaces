@@ -1,26 +1,45 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white px-5">
-    <div class="container-fluid px-0">
-      <a class="navbar-brand" routerLink="/">
-        <img src="assets/images/Logo.svg" class="logo" alt="">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="users">HOME</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="ABOUT" href="#">ABOUT</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="CONTACT" href="#">CONTACT</a>
-          </li>
-          <li class="nav-item d-flex m-0">
-            <a class="login-btn text-decoration-none btn-primary" routerLink="auth/login">LOGIN</a>
-          </li>
-        </ul>
-      </div>
+  <div class="container-fluid px-0">
+    <a class="navbar-brand" routerLink="/">
+      <img src="assets/images/Logo.svg" class="logo" alt="" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="users"
+            >HOME</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="ABOUT" href="#">ABOUT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="CONTACT" href="#">CONTACT</a>
+        </li>
+        <li class="nav-item d-flex m-0">
+          <ng-container *ngIf="isLogin; else elseTemplate">
+            <button class="login-btn btn-primary p-0" (click)="logout()">LOGOUT</button>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <a
+              class="login-btn text-decoration-none btn-primary"
+              routerLink="auth/login"
+              >LOGIN</a
+            >
+          </ng-template>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>

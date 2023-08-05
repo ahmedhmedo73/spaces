@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { SharedService } from 'src/app/shared/services/shared/shared.service';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { Store } from '@ngrx/store';
+import { login } from '../../store/authentication.actions';
+import { selectIsLoading } from '../../store/authentication.selectors';
 
 @Component({
   selector: 'app-login',
@@ -13,15 +12,18 @@ import { CookieService } from 'ngx-cookie-service';
 export class LoginComponent {
   loginForm!: FormGroup;
   httpLoading: boolean = false;
-  constructor(
-    private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-    private cookieService: CookieService,
-    private sharedService: SharedService
-  ) {}
+
+  constructor(private formBuilder: FormBuilder, private store: Store) {}
   ngOnInit(): void {
     this.createLoginForm();
+    this.getIsLoading();
+  }
+  getIsLoading() {
+    this.store.select(selectIsLoading).subscribe({
+      next: (data) => {
+        this.httpLoading = data;
+      },
+    });
   }
   createLoginForm(): void {
     this.loginForm = this.formBuilder.group({
@@ -31,27 +33,7 @@ export class LoginComponent {
   }
   login(): void {
     if (this.loginForm.valid) {
-      this.httpLoading = true;
-      this.authenticationService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {
-          this.httpLoading = false;
-          this.sharedService.show({
-            severity: 'success',
-            summary: 'Login',
-            detail: 'Log in successfully',
-          });
-          this.cookieService.set('token', response.token);
-          this.router.navigateByUrl('');
-        },
-        error: (reposnse) => {
-          this.httpLoading = false;
-          this.sharedService.show({
-            severity: 'error',
-            summary: 'Login',
-            detail: reposnse.error.error,
-          });
-        },
-      });
+      this.store.dispatch(login({ loginData: this.loginForm.value }));
     }
   }
 }

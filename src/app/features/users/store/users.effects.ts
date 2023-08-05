@@ -5,21 +5,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs/operators';
 
 import { UsersService } from '../services/users/users.service';
-import {
-  User,
-  UserFormData,
-  UsersResponse,
-} from '../models/users.interface';
-import {
-  createUser,
-  createUserSuccess,
-  deleteUser,
-  deleteUserSuccess,
-  getUsers,
-  getUsersSuccess,
-  updateUser,
-  updateUserSuccess,
-} from './users.actions';
+import { UsersResponse } from '../models/users.interface';
+import * as UsersActions from './users.actions';
 import { SharedService } from 'src/app/shared/services/shared/shared.service';
 
 @Injectable()
@@ -32,10 +19,10 @@ export class UsersEffects {
 
   getUsers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getUsers),
+      ofType(UsersActions.getUsers),
       switchMap(({ numOfUsers }) => this.UsersService.GetUsers(numOfUsers)),
       map((usersResponse: UsersResponse) =>
-        getUsersSuccess({
+        UsersActions.getUsersSuccess({
           users: usersResponse.data,
           totalUsers: usersResponse.total,
         })
@@ -45,7 +32,7 @@ export class UsersEffects {
 
   createUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(createUser),
+      ofType(UsersActions.createUser),
       switchMap(({ userFormData }) =>
         this.UsersService.creatUser(userFormData)
       ),
@@ -55,14 +42,14 @@ export class UsersEffects {
           summary: 'Create User',
           detail: 'User created successfully',
         });
-        return createUserSuccess();
+        return UsersActions.createUserSuccess();
       })
     )
   );
 
   updateUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUser),
+      ofType(UsersActions.updateUser),
       switchMap(({ id, userFormData }) =>
         this.UsersService.updateUser(id, userFormData)
       ),
@@ -72,14 +59,14 @@ export class UsersEffects {
           summary: 'Update User',
           detail: 'User Updated successfully',
         });
-        return updateUserSuccess();
+        return UsersActions.updateUserSuccess();
       })
     )
   );
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(deleteUser),
+      ofType(UsersActions.deleteUser),
       switchMap(({ id }) => this.UsersService.deleteUser(id)),
       map(() => {
         this.sharedService.show({
@@ -87,7 +74,7 @@ export class UsersEffects {
           summary: 'Delete User',
           detail: 'User Deleted successfully',
         });
-        return deleteUserSuccess();
+        return UsersActions.deleteUserSuccess();
       })
     )
   );

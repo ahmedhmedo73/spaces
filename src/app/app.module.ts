@@ -18,6 +18,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { AuthenticationModule } from './features/authentication/authentication.module';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, BreadcrumbComponent],
@@ -28,6 +29,7 @@ import { EffectsModule } from '@ngrx/effects';
     HttpClientModule,
     ToastModule,
     AppRoutingModule,
+    AuthenticationModule,
     StoreModule.forRoot(),
     EffectsModule.forRoot(),
   ],
