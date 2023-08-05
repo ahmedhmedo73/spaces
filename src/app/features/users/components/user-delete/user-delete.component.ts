@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '../../interfaces/users.interface';
-import { UsersService } from '../../services/users/users.service';
-import { SharedService } from 'src/app/shared/services/shared/shared.service';
+import { User } from '../../models/users.interface';
+import { Store } from '@ngrx/store';
+import { deleteUser, hideUserFormModal } from '../../store/users.actions';
+import {
+  selectIsLoading,
+  selectSelectedUser,
+} from '../../store/users.selectors';
 
 @Component({
   selector: 'app-user-delete',
@@ -9,38 +13,33 @@ import { SharedService } from 'src/app/shared/services/shared/shared.service';
   styleUrls: ['./user-delete.component.scss'],
 })
 export class UserDeleteComponent {
-  @Input('user') user!: User;
-  @Output('closeUserFormModal') closeUserFormModalEmitter = new EventEmitter();
+  user!: User;
   httpLoading: boolean = false;
-  constructor(
-    private usersService: UsersService,
-    private sharedService: SharedService
-  ) {}
 
-  delete(): void {
-    this.httpLoading = true;
-    this.usersService.deleteUser(this.user.id).subscribe({
-      next: (response: any) => {
-        this.httpLoading = false;
-        this.sharedService.show({
-          severity: 'success',
-          summary: 'Delete User',
-          detail: 'User Deleted successfully',
-        });
-        this.closeUserFormModal();
-      },
-      error: (error) => {
-        this.httpLoading = false;
-        this.sharedService.show({
-          severity: 'error',
-          summary: 'Delete User',
-          detail: 'Something wrong happend',
-        });
+  constructor(private store: Store) {}
+  ngOnInit(): void {
+    this.getIsLoading();
+    this.getSelectedUser();
+  }
+  getSelectedUser() {
+    this.store.select(selectSelectedUser).subscribe({
+      next: (response) => {
+        this.user = response;
       },
     });
   }
+  getIsLoading() {
+    this.store.select(selectIsLoading).subscribe({
+      next: (response) => {
+        this.httpLoading = response;
+      },
+    });
+  }
+  delete(): void {
+    this.store.dispatch(deleteUser({ id: this.user.id }));
+  }
 
   closeUserFormModal(): void {
-    this.closeUserFormModalEmitter.emit();
+    this.store.dispatch(hideUserFormModal());
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/core/environments/environment';
-import { UserFormData, UsersResponse } from '../../interfaces/users.interface';
+import { UserFormData, UsersResponse } from '../../models/users.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,8 @@ import { UserFormData, UsersResponse } from '../../interfaces/users.interface';
 export class UsersService {
   constructor(private httpClient: HttpClient) {}
 
-  GetUsers(page: number) {
-    return this.httpClient.get<UsersResponse>(environment.endpoint + 'users?page=' + page);
+  GetUsers(numOfUsers: number) {
+    return this.httpClient.get<UsersResponse>(environment.endpoint + 'users?per_page=' + numOfUsers);
   }
   creatUser(data: UserFormData) {
     return this.httpClient.post(environment.endpoint + 'users', data);

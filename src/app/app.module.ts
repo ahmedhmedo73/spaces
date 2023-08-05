@@ -16,6 +16,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, BreadcrumbComponent],
@@ -26,6 +28,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     HttpClientModule,
     ToastModule,
     AppRoutingModule,
+    StoreModule.forRoot(),
+    EffectsModule.forRoot(),
   ],
   providers: [
     HttpClient,

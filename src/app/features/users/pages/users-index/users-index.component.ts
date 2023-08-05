@@ -1,6 +1,25 @@
 import { Component, HostListener } from '@angular/core';
 import { UsersService } from '../../services/users/users.service';
-import { User } from '../../interfaces/users.interface';
+import { User } from '../../models/users.interface';
+import { Store } from '@ngrx/store';
+import {
+  changeModalMood,
+  changeSelectedUser,
+  getUsers,
+  hideUserDetails,
+  hideUserFormModal,
+  showUserDetails,
+  showUserFormModal,
+} from '../../store/users.actions';
+import {
+  selectIsLoading,
+  selectUserDetailsVisibility,
+  selectUserFormModalVisibility,
+  selectUserModalMood,
+  selectUsersList,
+  selectUsersTotal,
+} from '../../store/users.selectors';
+import { UserModalMoodType } from '../../models/users.types';
 
 @Component({
   selector: 'app-users-index',
@@ -10,17 +29,22 @@ import { User } from '../../interfaces/users.interface';
 export class UsersIndexComponent {
   userDetailsVisibility: boolean = false;
   userFormModalVisibility: boolean = false;
-  modalMood: string = '';
+  modalMood: UserModalMoodType = '';
   selectedUser!: User;
   users: User[] = [];
   selectedUserIndex: number = 0;
-  page: number = 1;
-  numOfPages: number = 0;
+  numOfUsers: number = 6;
+  totalUsers: number = 0;
   loading: boolean = false;
-  constructor(private UsersService: UsersService) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
+    this.getUsersLoading();
     this.getUsers();
+    this.getUsersTotal();
+    this.getUserFormModalVisibility();
+    this.getUserDetailsVisibility();
+    this.getUserModalMood();
   }
   @HostListener('window:scroll', ['$event'])
   onScroll() {
@@ -29,51 +53,84 @@ export class UsersIndexComponent {
 
     if (
       docElem.scrollHeight <= docElem.scrollTop + laoderOffset &&
-      this.numOfPages >= this.page &&
-      !this.loading
+      this.totalUsers > this.numOfUsers
     ) {
+      this.numOfUsers += 6;
+
       this.getUsers();
     }
   }
-  getUsers(): void {
-    this.loading = true;
-    this.UsersService.GetUsers(this.page).subscribe({
+  getUserModalMood() {
+    this.store.select(selectUserModalMood).subscribe({
       next: (response) => {
-        this.users = this.users.concat(response.data);
-        this.page++;
-        this.numOfPages = response.total_pages;
-        this.loading = false;
+        this.modalMood = response;
       },
-      error: (error) => {},
+    });
+  }
+  getUserDetailsVisibility() {
+    this.store.select(selectUserDetailsVisibility).subscribe({
+      next: (response) => {
+        this.userDetailsVisibility = response;
+      },
+    });
+  }
+  getUserFormModalVisibility(): void {
+    this.store.select(selectUserFormModalVisibility).subscribe({
+      next: (response) => {
+        this.userFormModalVisibility = response;
+      },
+    });
+  }
+  getUsersLoading(): void {
+    this.store.select(selectIsLoading).subscribe({
+      next: (response) => {
+        this.loading = response;
+      },
+    });
+  }
+
+  getUsers(): void {
+    this.store.dispatch(getUsers({ numOfUsers: this.numOfUsers }));
+    this.store.select(selectUsersList).subscribe({
+      next: (response) => {
+        this.users = response;
+      },
+    });
+  }
+  getUsersTotal(): void {
+    this.store.select(selectUsersTotal).subscribe({
+      next: (response) => {
+        this.totalUsers = response;
+      },
     });
   }
 
   showUserDetails(user: User, index: number) {
     this.selectedUserIndex = index;
-    this.selectedUser = user;
-    this.userDetailsVisibility = true;
+    this.store.dispatch(changeSelectedUser({ selectedUser: user }));
+    this.store.dispatch(showUserDetails());
   }
   hideUserDetails() {
-    this.userDetailsVisibility = false;
+    this.store.dispatch(hideUserDetails());
   }
   addUser(): void {
     this.showUserFormModal('addUser');
   }
   editUser(user: User): void {
-    this.selectedUser = user;
+    this.store.dispatch(changeSelectedUser({ selectedUser: user }));
     this.showUserFormModal('editUser');
   }
-  showUserFormModal(modalMood: string): void {
-    this.userFormModalVisibility = true;
-    this.modalMood = modalMood;
+  showUserFormModal(modalMood: UserModalMoodType): void {
+    this.store.dispatch(showUserFormModal());
+    this.store.dispatch(changeModalMood({ mood: modalMood }));
   }
   closeUserFormModal(): void {
-    this.userFormModalVisibility = false;
-    this.modalMood = '';
+    this.store.dispatch(hideUserFormModal());
+    this.store.dispatch(changeModalMood({ mood: '' }));
   }
   deleteUser(user: User): void {
     this.showUserFormModal('deleteUser');
 
-    this.selectedUser = user;
+    this.store.dispatch(changeSelectedUser({ selectedUser: user }));
   }
 }

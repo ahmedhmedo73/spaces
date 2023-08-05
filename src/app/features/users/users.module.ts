@@ -8,7 +8,10 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserDeleteComponent } from './components/user-delete/user-delete.component';
 import { UsersIndexSekeletonComponent } from './components/users-index-sekeleton/users-index-sekeleton.component';
-
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { UsersReducer } from './store/users.reducers';
+import { UsersEffects } from './store/users.effects';
 
 @NgModule({
   declarations: [
@@ -16,12 +19,14 @@ import { UsersIndexSekeletonComponent } from './components/users-index-sekeleton
     UserDetailsComponent,
     UserFormComponent,
     UserDeleteComponent,
-    UsersIndexSekeletonComponent
+    UsersIndexSekeletonComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
-    UsersRoutingModule
-  ]
+    StoreModule.forFeature('user', UsersReducer),
+    EffectsModule.forFeature([UsersEffects]),
+    UsersRoutingModule,
+  ],
 })
-export class UsersModule { }
+export class UsersModule {}

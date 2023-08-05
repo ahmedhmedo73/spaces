@@ -68,10 +68,7 @@
     </div>
     <div class="user-details-side-bar p-2 flex-column">
       <app-user-details
-        (hideUserDetails)="hideUserDetails()"
-        (editUser)="editUser(selectedUser)"
-        (deleteUser)="deleteUser(selectedUser)"
-        [user]="selectedUser"
+        (showUserFormModal)="showUserFormModal($event)"
       ></app-user-details>
     </div>
   </div>
@@ -88,23 +85,14 @@
 >
   <div [ngSwitch]="modalMood">
     <div *ngSwitchCase="'addUser'">
-      <app-user-form
-        (closeUserFormModal)="closeUserFormModal()"
-      ></app-user-form>
+      <app-user-form></app-user-form>
     </div>
     <div *ngSwitchCase="'editUser'">
-      <app-user-form
-        (closeUserFormModal)="closeUserFormModal()"
-        [user]="selectedUser"
-      ></app-user-form>
+      <app-user-form></app-user-form>
     </div>
     <div *ngSwitchCase="'deleteUser'">
-      <app-user-delete
-        [user]="selectedUser"
-        (closeUserFormModal)="closeUserFormModal()"
-      ></app-user-delete>
+      <app-user-delete></app-user-delete>
     </div>
-    <div *ngSwitchDefault>output2</div>
   </div>
 </p-dialog>
 

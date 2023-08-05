@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '../../interfaces/users.interface';
+import { User } from '../../models/users.interface';
+import { Store } from '@ngrx/store';
+import { selectSelectedUser } from '../../store/users.selectors';
+import { hideUserDetails } from '../../store/users.actions';
 
 @Component({
   selector: 'app-user-details',
@@ -7,17 +10,27 @@ import { User } from '../../interfaces/users.interface';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent {
-  @Input('user') user!: User;
-  @Output('hideUserDetails') hideUserDetailsEmitter = new EventEmitter();
-  @Output('editUser') editUserEmitter = new EventEmitter();
-  @Output('deleteUser') deleteUserEmitter = new EventEmitter();
+  @Output('showUserFormModal') showUserFormModalEmitter = new EventEmitter();
+  user!: User;
+
+  constructor(private store: Store) {}
+  ngOnInit(): void {
+    this.getSelectedUser();
+  }
+  getSelectedUser() {
+    this.store.select(selectSelectedUser).subscribe({
+      next: (response) => {
+        this.user = response;
+      },
+    });
+  }
   hideUserDetails(): void {
-    this.hideUserDetailsEmitter.emit();
+    this.store.dispatch(hideUserDetails());
   }
   editUser(): void {
-    this.editUserEmitter.emit();
+    this.showUserFormModalEmitter.emit('editUser');
   }
   deleteUser(): void {
-    this.deleteUserEmitter.emit();
+    this.showUserFormModalEmitter.emit('deleteUser');
   }
 }

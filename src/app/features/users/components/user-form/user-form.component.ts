@@ -1,8 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/services/shared/shared.service';
-import { UsersService } from '../../services/users/users.service';
-import { User } from '../../interfaces/users.interface';
+import { User } from '../../models/users.interface';
+import { Store } from '@ngrx/store';
+import {
+  selectIsLoading,
+  selectSelectedUser,
+  selectUserModalMood,
+} from '../../store/users.selectors';
+import {
+  createUser,
+  hideUserFormModal,
+  updateUser,
+} from '../../store/users.actions';
 
 @Component({
   selector: 'app-user-form',
@@ -10,8 +20,7 @@ import { User } from '../../interfaces/users.interface';
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent {
-  @Input('user') user!: User;
-  @Output('closeUserFormModal') closeUserFormModalEmitter = new EventEmitter();
+  user!: User;
   userForm!: FormGroup;
   httpLoading: boolean = false;
   userImageFile: any;
@@ -21,12 +30,40 @@ export class UserFormComponent {
   constructor(
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
-    private usersService: UsersService
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.createUserForm();
+    this.getIsLoading();
+    this.getSelectedUser();
+    this.getUserModalMood();
+  }
+  getUserModalMood() {
+    this.store.select(selectUserModalMood).subscribe({
+      next: (response) => {
+        if (response == 'editUser') {
+          this.handleDataForEdit();
+        }
+      },
+    });
+  }
+  getSelectedUser() {
+    this.store.select(selectSelectedUser).subscribe({
+      next: (response) => {
+        this.user = response;
+      },
+    });
+  }
+  getIsLoading() {
+    this.store.select(selectIsLoading).subscribe({
+      next: (response) => {
+        this.httpLoading = response;
+      },
+    });
+  }
 
+  handleDataForEdit(): void {
     if (this.user) {
       this.userForm.patchValue({
         name: this.user.first_name,
@@ -62,83 +99,17 @@ export class UserFormComponent {
       return;
     }
     if (this.userForm.valid) {
-      this.httpLoading = true;
-      this.usersService.creatUser(this.userForm.value).subscribe({
-        next: (response: any) => {
-          this.httpLoading = false;
-
-          if (response.id) {
-            this.sharedService.show({
-              severity: 'success',
-              summary: 'Create User',
-              detail: 'User created successfully',
-            });
-            this.cancel();
-          } else {
-            this.httpLoading = false;
-
-            this.sharedService.show({
-              severity: 'error',
-              summary: 'Create User',
-              detail: 'Something wrong happend',
-            });
-          }
-        },
-        error: (error) => {
-          this.httpLoading = false;
-
-          this.sharedService.show({
-            severity: 'error',
-            summary: 'Create User',
-            detail: 'Something wrong happend',
-          });
-        },
-      });
+      this.store.dispatch(createUser(this.userForm.value));
     }
   }
   edit(): void {
     if (this.userForm.valid) {
-      this.httpLoading = true;
-
-      this.usersService
-        .updateUser(this.user.id, this.userForm.value)
-        .subscribe({
-          next: (response: any) => {
-            this.httpLoading = false;
-
-            if (response.id) {
-              this.sharedService.show({
-                severity: 'success',
-                summary: 'Update User',
-                detail: 'User Updated successfully',
-              });
-              this.cancel();
-            } else {
-              this.httpLoading = false;
-
-              this.sharedService.show({
-                severity: 'error',
-                summary: 'Update User',
-                detail: 'Something wrong happend',
-              });
-            }
-          },
-          error: (error) => {
-            this.httpLoading = false;
-
-            this.sharedService.show({
-              severity: 'error',
-              summary: 'Update User',
-              detail: 'Something wrong happend',
-            });
-          },
-        });
+      this.store.dispatch(
+        updateUser({ id: this.user.id, userFormData: this.userForm.value })
+      );
     }
   }
   cancel(): void {
-    this.createUserForm();
-    this.userImageFile = undefined;
-    this.userImageSrc = '';
-    this.closeUserFormModalEmitter.emit();
+    this.store.dispatch(hideUserFormModal());
   }
 }
