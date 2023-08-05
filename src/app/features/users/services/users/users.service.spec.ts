@@ -131,4 +131,28 @@ describe('UsersService', () => {
     expect(mockReq.request.method).toEqual('DELETE');
     mockReq.flush({});
   });
+  it('should get user details successfully', () => {
+    service.GetUserDetails(1).subscribe({
+      next: (response) => {
+        expect(response).toBeTruthy();
+      },
+    });
+    const mockReq = testingController.expectOne(
+      environment.endpoint + 'users/1'
+    );
+    expect(mockReq.request.method).toEqual('GET');
+    mockReq.flush({
+      data: {
+        id: 1,
+        email: 'george.bluth@reqres.in',
+        first_name: 'George',
+        last_name: 'Bluth',
+        avatar: 'https://reqres.in/img/faces/1-image.jpg',
+      },
+      support: {
+        url: 'https://reqres.in/#support-heading',
+        text: 'To keep ReqRes free, contributions towards server costs are appreciated!',
+      },
+    });
+  });
 });

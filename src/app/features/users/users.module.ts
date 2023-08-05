@@ -12,6 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { UsersReducer } from './store/users.reducers';
 import { UsersEffects } from './store/users.effects';
+import { UserDetailsSkeletonComponent } from './components/user-details-skeleton/user-details-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { UsersEffects } from './store/users.effects';
     UserFormComponent,
     UserDeleteComponent,
     UsersIndexSekeletonComponent,
+    UserDetailsSkeletonComponent,
   ],
   imports: [
     CommonModule,
