@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import {
   changeModalMood,
   changeSelectedUser,
+  getUserDetails,
   getUsers,
   hideUserDetails,
   hideUserFormModal,
@@ -122,8 +123,8 @@ export class UsersIndexComponent {
 
   showUserDetails(user: User, index: number) {
     this.selectedUserIndex = index;
-    this.store.dispatch(changeSelectedUser({ selectedUser: user }));
-    this.store.dispatch(showUserDetails());
+    this.store.dispatch(getUserDetails({ id: user.id }));
+    // this.store.dispatch(showUserDetails());
   }
   hideUserDetails() {
     this.store.dispatch(hideUserDetails());

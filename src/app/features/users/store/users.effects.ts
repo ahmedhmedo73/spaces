@@ -63,6 +63,17 @@ export class UsersEffects {
       })
     )
   );
+  getUserDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.getUserDetails),
+      switchMap(({ id }) => this.UsersService.GetUserDetails(id)),
+      map((response) => {
+        return UsersActions.getUserDetailsSuccess({
+          userDetails: response.data,
+        });
+      })
+    )
+  );
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(

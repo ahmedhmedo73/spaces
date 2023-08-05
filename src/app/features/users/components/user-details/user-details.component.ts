@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from '../../models/users.interface';
 import { Store } from '@ngrx/store';
-import { selectSelectedUser } from '../../store/users.selectors';
+import {
+  selectIsLoading,
+  selectUserDetails,
+} from '../../store/users.selectors';
 import { hideUserDetails } from '../../store/users.actions';
 import { Subscription } from 'rxjs';
 
@@ -14,14 +17,23 @@ export class UserDetailsComponent {
   @Output('showUserFormModal') showUserFormModalEmitter = new EventEmitter();
   user!: User;
   subscriptionList: Subscription[] = [];
+  isLoading: boolean = false;
 
   constructor(private store: Store) {}
   ngOnInit(): void {
-    this.getSelectedUser();
+    this.getUserDetails();
+    this.getIsLoading();
   }
-  getSelectedUser() {
+  getIsLoading() {
+    this.store.select(selectIsLoading).subscribe({
+      next: (data) => {
+        this.isLoading = data;
+      },
+    });
+  }
+  getUserDetails() {
     this.subscriptionList.push(
-      this.store.select(selectSelectedUser).subscribe({
+      this.store.select(selectUserDetails).subscribe({
         next: (response) => {
           this.user = response;
         },

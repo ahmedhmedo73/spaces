@@ -19,6 +19,10 @@ export interface UsersResponse {
   data: User[];
   support: Support;
 }
+export interface UserDetailsResponse {
+  data: User;
+  support: Support;
+}
 
 export interface Support {
   url: string;

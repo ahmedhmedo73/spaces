@@ -8,5 +8,6 @@ export interface IUsersState {
   userFormModalVisibility: boolean;
   userDetailsVisibility: boolean;
   selectedUser: User;
+  userDetails: User;
   userModalMood: UserModalMoodType;
 }

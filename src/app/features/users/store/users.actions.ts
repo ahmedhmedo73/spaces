@@ -47,6 +47,18 @@ export const createUser = createAction(
 
 export const createUserSuccess = createAction(`${createUser.type} Success`);
 
+export const getUserDetails = createAction(
+  `${prefix} Get UserDetails`,
+  props<{
+    id: number;
+  }>()
+);
+export const getUserDetailsSuccess = createAction(
+  `${prefix} Get UserDetails success`,
+  props<{
+    userDetails: User;
+  }>()
+);
 export const updateUser = createAction(
   `${prefix} Update User`,
   props<{

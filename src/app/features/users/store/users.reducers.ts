@@ -6,17 +6,18 @@ export const initialUsersState: IUsersState = {
   userFormModalVisibility: false,
   userDetailsVisibility: false,
   selectedUser: { avatar: '', email: '', first_name: '', id: 0, last_name: '' },
+  userDetails: { avatar: '', email: '', first_name: '', id: 0, last_name: '' },
   users: [],
   totalUsers: 0,
   isLoading: false,
-  userModalMood : ''
+  userModalMood: '',
 };
 const reducer = createReducer<IUsersState>(
   initialUsersState,
   on(UsersActions.changeModalMood, (state, { mood }) => {
     return {
       ...state,
-      userModalMood : mood,
+      userModalMood: mood,
     };
   }),
   on(UsersActions.changeSelectedUser, (state, { selectedUser }) => {
@@ -99,6 +100,20 @@ const reducer = createReducer<IUsersState>(
     return {
       ...state,
       userFormModalVisibility: false,
+      isLoading: false,
+    };
+  }),
+  on(UsersActions.getUserDetails, (state) => {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+  on(UsersActions.getUserDetailsSuccess, (state, { userDetails }) => {
+    return {
+      ...state,
+      userDetailsVisibility: true,
+      userDetails,
       isLoading: false,
     };
   })

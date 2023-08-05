@@ -30,3 +30,7 @@ export const selectIsLoading = createSelector(
   selectUserState,
   (state) => state.isLoading
 );
+export const selectUserDetails = createSelector(
+  selectUserState,
+  (state) => state.userDetails
+);
