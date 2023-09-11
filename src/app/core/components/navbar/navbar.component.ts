@@ -32,6 +32,12 @@ export class NavbarComponent {
   logout(): void {
     this.store.dispatch(setToken({ token: '' }));
     this.router.navigateByUrl('/auth/login');
+
+    console.log('lol');
+
+    //remove cashe
+    //@ts-ignore
+    location.reload(true);
   }
   ngOnDestroy(): void {
     this.subscriptionList.forEach((subscription) => {
