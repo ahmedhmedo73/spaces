@@ -28,16 +28,15 @@ export class NavbarComponent {
     );
   }
   logout(): void {
-    this.store.dispatch(setToken({ token: '' }));
-    this.router.navigateByUrl('/auth/login');
-
-    console.log('lol2');
-
-    if(this.isLogin === true){
+    if (this.isLogin === true) {
+      console.log('lol2');
+      this.store.dispatch(setToken({ token: '' }));
+      this.router.navigateByUrl('/auth/login');
       //remove cashe
       //@ts-ignore
       location.reload(true);
     }
+
   }
   ngOnDestroy(): void {
     this.subscriptionList.forEach((subscription) => {
