@@ -22,8 +22,6 @@ export class NavbarComponent {
     this.subscriptionList.push(
       this.store.select(selectToken).subscribe({
         next: (data) => {
-          console.log(data);
-
           this.isLogin = !!data;
         },
       })
@@ -33,11 +31,13 @@ export class NavbarComponent {
     this.store.dispatch(setToken({ token: '' }));
     this.router.navigateByUrl('/auth/login');
 
-    console.log('lol');
+    console.log('lol2');
 
-    //remove cashe
-    //@ts-ignore
-    location.reload(true);
+    if(this.isLogin === true){
+      //remove cashe
+      //@ts-ignore
+      location.reload(true);
+    }
   }
   ngOnDestroy(): void {
     this.subscriptionList.forEach((subscription) => {
