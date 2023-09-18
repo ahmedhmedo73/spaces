@@ -20,6 +20,10 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthenticationModule } from './features/authentication/authentication.module';
 
+import { environment } from "src/app/core/environments/environment";
+import { initializeApp } from 'firebase/app';
+const app = initializeApp(environment.firebase);
+
 @NgModule({
   declarations: [AppComponent, NavbarComponent, BreadcrumbComponent],
   imports: [
