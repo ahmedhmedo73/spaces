@@ -8,34 +8,34 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <button id="test">test4</button>
+    <button id="test">test5</button>
     <script>
       try {
         const btn = document.getElementById("test");
         btn.addEventListener("click", () => {
-          if (ApplePaySession) {
-            if (ApplePaySession.canMakePayments()) {
-              const session = new ApplePaySession(1, {
-                currencyCode: "SAR",
-                countryCode: "SA",
-                requiredShippingContactFields: ["postalAddress"],
-                lineItems: [{ label: "subTotalDescr", amount: "11" }],
-                total: {
-                  label: "bag",
-                  amount: "100",
-                },
-                supportedNetworks: ["masterCard", "visa"],
-                merchantCapabilities: [
-                  "supports3DS",
-                  "supportsEMV",
-                  "supportsCredit",
-                  "supportsDebit",
-                ],
-              });
-              session.onpaymentauthorized = (event) => {
-                alert(JSON.stringify(event));
-              };
-            }
+          if (ApplePaySession && ApplePaySession.canMakePayments()) {
+            let session = new ApplePaySession(1, {
+              currencyCode: "SAR",
+              countryCode: "SA",
+              requiredShippingContactFields: ["postalAddress"],
+              lineItems: [{ label: "subTotalDescr", amount: "11" }],
+              total: {
+                label: "bag",
+                amount: "100",
+              },
+              supportedNetworks: ["masterCard", "visa"],
+              merchantCapabilities: [
+                "supports3DS",
+                "supportsEMV",
+                "supportsCredit",
+                "supportsDebit",
+              ],
+            });
+
+            alert(JSON.stringify(session));
+            session.onpaymentauthorized = (event) => {
+              alert(JSON.stringify(event));
+            };
           }
         });
       } catch (error) {
