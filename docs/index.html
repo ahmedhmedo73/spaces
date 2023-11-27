@@ -12,27 +12,31 @@
           alert("hi, I can do ApplePay.....");
           alert("sad");
           alert(ApplePaySession);
-          const session = new ApplePaySession(1, {
-            currencyCode: "SAR",
-            countryCode: "SA",
-            requiredShippingContactFields: ["postalAddress"],
-            lineItems: [{ label: "subTotalDescr", amount: "11" }],
-            total: {
-              label: "bag",
-              amount: "100",
-            },
-            supportedNetworks: ["masterCard", "visa"],
-            merchantCapabilities: [
-              "supports3DS",
-              "supportsEMV",
-              "supportsCredit",
-              "supportsDebit",
-            ],
-          });
-          alert(session);
-          session.onpaymentauthorized = (event) => {
-            alert(event);
-          };
+          try {
+            const session = new ApplePaySession(1, {
+              currencyCode: "SAR",
+              countryCode: "SA",
+              requiredShippingContactFields: ["postalAddress"],
+              lineItems: [{ label: "subTotalDescr", amount: "11" }],
+              total: {
+                label: "bag",
+                amount: "100",
+              },
+              supportedNetworks: ["masterCard", "visa"],
+              merchantCapabilities: [
+                "supports3DS",
+                "supportsEMV",
+                "supportsCredit",
+                "supportsDebit",
+              ],
+            });
+            alert(session);
+            session.onpaymentauthorized = (event) => {
+              alert(event);
+            };
+          } catch (error) {
+            alert(error);
+          }
         }
       }
     </script>
