@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
-      const btn = document.getElementById("test");
-      btn.addEventListener("click", () => {
-        if (ApplePaySession) {
-          if (ApplePaySession.canMakePayments()) {
-            alert("hi, I can do ApplePay.....");
-            alert("sad");
-            alert(ApplePaySession);
-            try {
+      try {
+        const btn = document.getElementById("test");
+        btn.addEventListener("click", () => {
+          if (ApplePaySession) {
+            if (ApplePaySession.canMakePayments()) {
+              alert("hi, I can do ApplePay.....");
+              alert("sad");
+              alert(ApplePaySession);
               const session = new ApplePaySession(1, {
                 currencyCode: "SAR",
                 countryCode: "SA",
@@ -36,16 +36,16 @@
               session.onpaymentauthorized = (event) => {
                 alert(event);
               };
-            } catch (error) {
-              alert(error);
             }
           }
-        }
-      });
+        });
+      } catch (error) {
+        alert(error);
+      }
     </script>
   </head>
   <body>
-    <button id="test">test</button>
+    <button id="test">test1</button>
     <app-root></app-root>
   </body>
 </html>
