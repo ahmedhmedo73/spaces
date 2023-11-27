@@ -8,16 +8,13 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <button id="test">test2</button>
+    <button id="test">test3</button>
     <script>
       try {
         const btn = document.getElementById("test");
         btn.addEventListener("click", () => {
           if (ApplePaySession) {
             if (ApplePaySession.canMakePayments()) {
-              alert("hi, I can do ApplePay.....");
-              alert("sad");
-              alert(ApplePaySession);
               const session = new ApplePaySession(1, {
                 currencyCode: "SAR",
                 countryCode: "SA",
@@ -35,7 +32,7 @@
                   "supportsDebit",
                 ],
               });
-              alert(session);
+              alert(JSON.stringify(session));
               session.onpaymentauthorized = (event) => {
                 alert(event);
               };
