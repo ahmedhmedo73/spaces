@@ -8,7 +8,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <button id="test">test6</button>
+    <button id="test">test7</button>
     <script>
       try {
         const btn = document.getElementById("test");
@@ -35,6 +35,9 @@
             alert(JSON.stringify(session));
             session.onpaymentauthorized = (event) => {
               alert(JSON.stringify(event));
+            };
+            session.oncancel = () => {
+              alert("cancelled");
             };
             session.begin();
           }
