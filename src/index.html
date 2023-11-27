@@ -1,13 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Spaces</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Spaces</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      if (ApplePaySession) {
+        if (ApplePaySession.canMakePayments()) {
+          alert("hi, I can do ApplePay.....");
+          alert("sad");
+          alert(ApplePaySession);
+          const session = new ApplePaySession(1, {
+            currencyCode: "SAR",
+            countryCode: "SA",
+            requiredShippingContactFields: ["postalAddress"],
+            lineItems: [{ label: "subTotalDescr", amount: "11" }],
+            total: {
+              label: "bag",
+              amount: "100",
+            },
+            supportedNetworks: ["masterCard", "visa"],
+            merchantCapabilities: [
+              "supports3DS",
+              "supportsEMV",
+              "supportsCredit",
+              "supportsDebit",
+            ],
+          });
+          alert(session);
+          session.onpaymentauthorized = (event) => {
+            alert(event);
+          };
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>
