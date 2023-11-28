@@ -387,7 +387,7 @@
     /></noscript>
   </head>
   <body>
-    <button id="test">test8</button>
+    <button id="test">test9</button>
     <script>
       try {
         const btn = document.getElementById("test");
@@ -418,8 +418,8 @@
             session.oncancel = () => {
               alert("cancelled");
             };
-            session.onvalidatemerchant = (event) => {
-              alert("onvalidatemerchant" + JSON.stringify(event));
+            session.onvalidatemerchant = (...args) => {
+              alert("onvalidatemerchant" + JSON.stringify(args));
             };
             session.begin();
           }
