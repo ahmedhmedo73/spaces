@@ -39,6 +39,9 @@
             session.oncancel = () => {
               alert("cancelled");
             };
+            session.onvalidatemerchant = (event) => {
+              alert("onvalidatemerchant" + JSON.stringify(event));
+            };
             session.begin();
           }
         });
