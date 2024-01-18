@@ -385,10 +385,45 @@
     <noscript
       ><link rel="stylesheet" href="styles.bde016708ca3a0e6.css"
     /></noscript>
+
+    <!-- Moyasar Styles -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.moyasar.com/mpf/1.12.0/moyasar.css"
+    />
+
+    <!-- Moyasar Scripts -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=fetch"></script>
+    <script src="https://cdn.moyasar.com/mpf/1.12.0/moyasar.js"></script>
   </head>
   <body>
-    <button id="test">test9</button>
+    <button id="test">test16</button>
+    <div class="mysr-form"></div>
     <script>
+      alert(
+        window?.ApplePaySession && window?.ApplePaySession.canMakePayments()
+      );
+      Moyasar.init({
+        element: ".mysr-form",
+
+        // Amount in the smallest currency unit.
+        // For example:
+        // 10 SAR = 10 * 100 Halalas
+        // 10 KWD = 10 * 1000 Fils
+        // 10 JPY = 10 JPY (Japanese Yen does not have fractions)
+        amount: 1000,
+        currency: "SAR",
+        description: "Coffee Order #1",
+        publishable_api_key: "pk_live_HVwrp2aNqZNjDqGLdTf1yZq8GNB5Lfyb3vcGZ7C5",
+        callback_url: "https://moyasar.com/thanks",
+        methods: ["applepay", "creditcard"],
+        supported_networks: ["mada", "visa"],
+        apple_pay: {
+          country: "SA",
+          label: "Awesome Cookie Store",
+          validate_merchant_url: "https://api.moyasar.com/v1/applepay/initiate",
+        },
+      });
       try {
         const btn = document.getElementById("test");
         btn.addEventListener("click", () => {
@@ -396,11 +431,9 @@
             let session = new ApplePaySession(1, {
               currencyCode: "SAR",
               countryCode: "SA",
-              requiredShippingContactFields: ["postalAddress"],
-              lineItems: [{ label: "subTotalDescr", amount: "11" }],
               total: {
-                label: "bag",
-                amount: "100",
+                label: "دفع جدية الحجز على الصك #1212112",
+                amount: "1",
               },
               supportedNetworks: ["masterCard", "visa"],
               merchantCapabilities: [
@@ -411,15 +444,86 @@
               ],
             });
 
-            alert(JSON.stringify(session));
+            // alert(JSON.stringify(session));
             session.onpaymentauthorized = (event) => {
-              alert(JSON.stringify(event));
+              const token = event.payment.token;
+              alert("event.payment.token" + event.payment.token);
+              // prepare request for moyasar
+              let body = {
+                amount: 10,
+                currency: "SAR",
+                description: "My Awsome Order #1234",
+                publishable_api_key:
+                  "pk_test_UuoAgKCrJ53MoCUZgp8SndJGKyAbZvXuVJf8KTM",
+                source: {
+                  type: "applepay",
+                  token: token,
+                },
+                metadata: {
+                  order: "1234",
+                },
+              };
+
+              // send the request
+              fetch("https://api.moyasar.com/v1/payments", {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+              })
+                .then((response) => response.json())
+                .then((payment) => {
+                  if (!payment.id) {
+                    // TODO: Handle validation or API authorization error
+                  }
+
+                  if (payment.status != "paid") {
+                    session.completePayment({
+                      status: ApplePaySession.STATUS_FAILURE,
+                      errors: [payment.source.message],
+                    });
+
+                    return;
+                  }
+
+                  // TODO: Save payment to your backend and complete your business logic
+
+                  // Compleate payment with success
+                  session.completePayment({
+                    status: ApplePaySession.STATUS_SUCCESS,
+                  });
+                })
+                .catch((error) => {
+                  session.completePayment({
+                    status: ApplePaySession.STATUS_FAILURE,
+                    errors: [error.toString()],
+                  });
+                });
             };
             session.oncancel = () => {
-              alert("cancelled");
+              // alert("cancelled");
             };
-            session.onvalidatemerchant = (...args) => {
-              alert("onvalidatemerchant" + JSON.stringify(args));
+            session.onvalidatemerchant = (event) => {
+              // alert("event.validationURL" + event.validationURL);
+              const body = {
+                validation_url: event.validationURL,
+                display_name: "7amda-tech",
+                domain_name: "tubular-valkyrie-dafab1.netlify.app",
+                publishable_api_key:
+                  "pk_test_UuoAgKCrJ53MoCUZgp8SndJGKyAbZvXuVJf8KTMz",
+              };
+
+              fetch("https://api.moyasar.com/v1/applepay/initiate", {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+              })
+                .then((res) => res.json()) // Parse response as JSON.
+                .then((merchantSession) => {
+                  session.completeMerchantValidation(merchantSession);
+                })
+                .catch((err) => {
+                  alert("Error fetching merchant session" + err);
+                });
             };
             session.begin();
           }
@@ -427,8 +531,21 @@
       } catch (error) {
         alert(error);
       }
+      const login = async () => {
+        const response = await fetch(
+          "https://api.instagram.com/oauth/authorize?client_id=2273068339565603&redirect_uri=https://ahmedhmedo73.github.io/spaces/&scope=user_profile,user_media&response_type=code",
+          {
+            headers: {
+              "Access-Control-Allow-Origin":
+                "https://ahmedhmedo73.github.io/spaces/",
+            },
+          }
+        );
+      };
+
+      login();
     </script>
-    <app-root></app-root>
+    <!-- <app-root></app-root> -->
     <script src="runtime.ef69c367c148b8fe.js" type="module"></script>
     <script src="polyfills.74612aad12d9cef1.js" type="module"></script>
     <script src="scripts.b73311b29b2da141.js" defer></script>
